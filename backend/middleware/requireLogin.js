@@ -18,6 +18,7 @@ module.exports = (req, res, next) => {
                 User.findById(id)
                     .then(userData => {
                         userData.password = undefined,
+                        req.user = userData
                         console.log(userData)
                         next()
                     })

@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(cors())
 
 app.use(require('./routes/auth'))
+app.use(require('./routes/user'))
 
 
 const connectDB = async () => {
