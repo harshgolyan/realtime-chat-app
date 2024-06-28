@@ -6,8 +6,8 @@ const objectId = mongoose.Schema.Types.ObjectId;
 const chatSchemaZod = z.object({
     chatName: z.string().trim(),
     isGroupChat: z.boolean().default(false),
-    user: z.array(z.string().refine(val => mongoose.Types.ObjectId.isValid(val), {
-        message: "invalid user"
+    users: z.array(z.string().refine(val => mongoose.Types.ObjectId.isValid(val), {
+        message: "invalid users"
     })),
     latestMessage: z.string().refine(val => mongoose.Types.ObjectId.isValid(val), {
         message: "invalid latest message"
@@ -26,7 +26,7 @@ const chatSchemaMongoose = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    user: [{
+    users: [{
         type: objectId,
         ref: "User"
     }],
@@ -46,7 +46,7 @@ chatSchemaMongoose.pre("save", function (next) {
     const result = chatSchemaZod.safeParse({
         chatName: chat.chatName,
         isGroupChat: chat.isGroupChat,
-        user: chat.user.map(user => user.toString()),
+        users: chat.users.map(user => user.toString()),
         latestMessage: chat.latestMessage ? chat.latestMessage.toString() : undefined,
         groupAdmin: chat.groupAdmin ? chat.groupAdmin.toString() : undefined
     });
