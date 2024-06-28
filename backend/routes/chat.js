@@ -46,5 +46,15 @@ router.post("/createchat", requireLogin, async (req, res) => {
     }
 })
 
+//fetch chat of login user
+router.get("/fetchchat", requireLogin, (req, res) => {
+    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+        .then(result => res.send(result))
+        .catch(error => {
+            console.error("Error fetching chats:", error);
+            res.status(500).json({ error: "Internal server error" });
+        })
+})
+
 
 module.exports = router;
