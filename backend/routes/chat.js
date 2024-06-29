@@ -48,12 +48,23 @@ router.post("/createchat", requireLogin, async (req, res) => {
 
 //fetch chat of login user
 router.get("/fetchchat", requireLogin, (req, res) => {
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-        .then(result => res.send(result))
-        .catch(error => {
-            console.error("Error fetching chats:", error);
-            res.status(500).json({ error: "Internal server error" });
-        })
+    try {
+        Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+        .populate("users", "-password")
+        .populate("groupAdmin","-password")
+        .populate("latestMessage")
+        .sort({updatedAt: -1})
+        .then(async (result) => {
+            result = await User.populate(result, {
+                path: "latestMessage.sender",
+                select: "name email pic"
+            })
+            res.status(200).send(result)
+        })  
+    } catch (error) {
+        console.error("Error fetching chats:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 })
 
 
