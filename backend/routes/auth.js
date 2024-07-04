@@ -49,7 +49,7 @@ router.post("/login", (req,res) => {
         User.findOne({email: email})
             .then(oldUser => {
                 if(!oldUser) {
-                    res.status(422),json({error: "email is not registered"})
+                    res.status(422).json({error: "email is not registered"})
                 }
                 else {
                     bcrypt.compare(password,oldUser.password)
@@ -57,7 +57,7 @@ router.post("/login", (req,res) => {
                             if(match) {
                                 const uid = oldUser._id
                                 const token = jwt.sign({id:uid},process.env.SECRETKEY)
-                                res.json({token})
+                                res.status(200).json({token,uid,msg: "user login successfully"})
                             }
                             else {
                                 res.status(422).json({error: "invalid password"})

@@ -18,9 +18,12 @@ const Login = () => {
             }
         })
         .then(response => {
+        console.log(response)
         if (response.data.msg === 'user login successfully') {
             localStorage.setItem('jwt',response.data.token)
-            navigate('/fetchchat');
+            localStorage.setItem('userId',response.data.uid)
+            // console.log(response.data)
+            navigate('/mainscreen');
         }
         })
         .catch(error => {
