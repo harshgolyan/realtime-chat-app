@@ -10,7 +10,7 @@ const MainScreen = () =>  {
     return (
         <>
             <Navbar searchResult={searchResult} setSearchResult={setSearchResult} />
-            <ChatBar searchResult={searchResult} />
+            <ChatBar searchResult={searchResult} setSearchResult={setSearchResult} />
         </>
     );
 }
