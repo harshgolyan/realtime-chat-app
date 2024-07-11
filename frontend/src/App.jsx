@@ -8,13 +8,13 @@ const App = () => {
   return(
     <>
       <div className="bg-[#eaa7f8] h-screen">
-        <BrowserRouter>
-          <Routes>
-            <Route exact path = "/" element={<SignUp />}/>
-            <Route path = "/login" element={<Login />}/>
-            <Route path = "/mainscreen" element={<MainScreen />} />
-          </Routes>
-        </BrowserRouter>
+          <BrowserRouter>
+            <Routes>
+              <Route exact path = "/" element={<SignUp />}/>
+              <Route path = "/login" element={<Login />}/>
+              <Route path = "/mainscreen" element={<MainScreen />} />
+            </Routes>
+          </BrowserRouter>
       </div>
     </>
   )

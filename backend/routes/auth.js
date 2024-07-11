@@ -9,7 +9,7 @@ const router = express.Router()
 
 //sign up
 router.post("/signup", (req,res) => {
-    const { email,name,password } = req.body;
+    const { email,name,password,pic } = req.body;
     if(!email || !name || !password) {
         res.status(422).json({error:"all fields are required"})
     } 
@@ -26,7 +26,7 @@ router.post("/signup", (req,res) => {
                                 email: email,
                                 name: name,
                                 password: hashedPassword,
-                                // pic
+                                pic
                             })
                             user.save()
                                 .then(newUser => {
