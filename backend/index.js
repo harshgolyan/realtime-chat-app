@@ -14,6 +14,7 @@ app.use(cors())
 app.use(require('./routes/auth'))
 app.use(require('./routes/user'))
 app.use(require('./routes/chat'))
+app.use(require('./routes/message'))
 
 
 const connectDB = async () => {
