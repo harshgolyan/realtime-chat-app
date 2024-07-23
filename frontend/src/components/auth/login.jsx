@@ -28,10 +28,9 @@ const Login = () => {
             response.data.msg ? toast.success(response.data.msg) : ""
             navigate('/mainscreen');
         }
-         
         })
         .catch(error => {
-            console.error('There was an error!', error.response.data.error);
+            console.error('There was an error!', error);
             toast.error(error.response.data.error)
         });
     }

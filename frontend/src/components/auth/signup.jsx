@@ -48,6 +48,7 @@ const SignUp = () => {
     })
     .catch(error => {
         console.error('There was an error!', error);
+        toast.error(error.response.data.error)
     });
 };
 3   
