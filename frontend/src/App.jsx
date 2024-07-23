@@ -3,6 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import SignUp from "./components/auth/signup";
 import Login from "./components/auth/login";
 import MainScreen from "./components/mainscreen/mainscreen";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   return(
@@ -15,6 +18,7 @@ const App = () => {
               <Route path = "/mainscreen" element={<MainScreen />} />
             </Routes>
           </BrowserRouter>
+          <ToastContainer />
       </div>
     </>
   )

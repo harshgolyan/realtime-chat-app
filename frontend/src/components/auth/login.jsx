@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const [email, setEmail] = useState();
@@ -23,11 +25,14 @@ const Login = () => {
             localStorage.setItem('jwt',response.data.token)
             localStorage.setItem('userId',response.data.uid)
             // console.log(response.data)
+            response.data.msg ? toast.success(response.data.msg) : ""
             navigate('/mainscreen');
         }
+         
         })
         .catch(error => {
-            console.error('There was an error!', error);
+            console.error('There was an error!', error.response.data.error);
+            toast.error(error.response.data.error)
         });
     }
 

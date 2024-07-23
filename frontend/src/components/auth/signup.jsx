@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const SignUp = () => {
     const [name, setName] = useState();
@@ -39,6 +42,7 @@ const SignUp = () => {
     })
     .then(response => {
         if (response.data.msg === 'new user added successfully') {
+            response.data.msg ? toast.success(response.data.msg) : ""
             navigate('/login');
         }
     })
