@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
 import { useNavigate } from 'react-router-dom';
 
 function Navbar({ searchResult, setSearchResult }) {
+
   const navigate = useNavigate();
+  const myProfile = localStorage.getItem("userName")
+
   const [search, setSearch] = useState('');
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -28,21 +29,19 @@ function Navbar({ searchResult, setSearchResult }) {
   };
 
   const options = [
-    { value: 'profile', label: 'My Profile' },
+    { value: 'profile', label: myProfile },
     { value: 'logout', label: 'Logout' }
   ];
 
   const handleDropdownSelect = (option) => {
     if (option.value === 'profile') {
-      // Navigate to profile
       console.log('Navigate to profile');
     } else if (option.value === 'logout') {
-      // Handle logout
       console.log('Handle logout');
       localStorage.removeItem('jwt');
       localStorage.removeItem('userId');
+      localStorage.removeItem("userName")
       navigate("/login")
-      // Add your logout navigation logic here
     }
   };
 
@@ -65,7 +64,7 @@ function Navbar({ searchResult, setSearchResult }) {
       <div className="relative">
         <img
           src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
-          className="h-[30px] w-[30px] rounded-2xl cursor-pointer"
+          className="h-[35px] w-[35px] rounded-2xl cursor-pointer"
           onClick={() => setDropdownVisible(!dropdownVisible)}
         />
         {dropdownVisible && (

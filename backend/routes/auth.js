@@ -56,8 +56,9 @@ router.post("/login", (req,res) => {
                           .then(match => {
                             if(match) {
                                 const uid = oldUser._id
+                                const name = oldUser.name
                                 const token = jwt.sign({id:uid},process.env.SECRETKEY)
-                                res.status(200).json({token,uid,msg: "user login successfully"})
+                                res.status(200).json({token,uid,name,msg: "user login successfully"})
                             }
                             else {
                                 res.status(422).json({error: "invalid password"})

@@ -3,8 +3,9 @@ import axios from 'axios';
 
 function Chatscreen({ chatUser, currChat }) {
   // console.log("chatuser", chatUser)
-  // console.log("currChat", currChat.name)
-  const chatId = localStorage.getItem("userId")
+  console.log("currChat", currChat._id)
+  const chatId = currChat._id
+  
 
   useEffect(() => {
     axios.get(`http://localhost:3000/all-chat/${chatId}`, {
@@ -15,6 +16,9 @@ function Chatscreen({ chatUser, currChat }) {
     })
     .then(response => {
       console.log(response)
+      response.data.messages.map(item => {
+        console.log("item",item.content)
+      })
     })
   },[currChat])
 

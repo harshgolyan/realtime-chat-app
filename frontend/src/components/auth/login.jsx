@@ -24,6 +24,7 @@ const Login = () => {
         if (response.data.msg === 'user login successfully') {
             localStorage.setItem('jwt',response.data.token)
             localStorage.setItem('userId',response.data.uid)
+            localStorage.setItem("userName",response.data.name)
             // console.log(response.data)
             response.data.msg ? toast.success(response.data.msg) : ""
             navigate('/mainscreen');
