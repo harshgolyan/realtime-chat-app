@@ -9,7 +9,6 @@ const MainScreen = () =>  {
     const [searchResult, setSearchResult] = useState([]);
     const [currChat, setCurrChat] = useState();
     const { user } = chatState();
-    console.log("user",user)
     return (
         <>
             <Navbar searchResult={searchResult} setSearchResult={setSearchResult} />
