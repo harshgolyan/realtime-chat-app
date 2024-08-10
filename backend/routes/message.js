@@ -34,10 +34,12 @@ router.post("/send-message", requireLogin, (req, res) => {
                     select: "name email pic"
                     });
                 })
-                Chat.findByIdAndUpdate(req.body.chatId, {
-                    latestMessage: newMessage
+                .then (message => {
+                    Chat.findByIdAndUpdate(req.body.chatId, {
+                        latestMessage: message
+                    })
+                    res.status(200).json({msg: "new message from sender", message})
                 })
-                res.status(200).json({msg: "new message from sender"})
     } catch (error) {
         res.json(400).json({error: error})
     }
@@ -45,37 +47,15 @@ router.post("/send-message", requireLogin, (req, res) => {
 
 //get all chat
 
-// router.get("/all-chat/:chatId", requireLogin, (req, res) => {
-//     try {
-//         Message.find({chat: req.params.chatId})
-//                .then(messages => {
-//                 // console.log(messages)
-//                 return messages.populate("sender", "name email pic")
-//                })
-//                .then(messages => {
-//                 return messages.populate("chat")
-//                })
-//                res.status(200).json({msg: "all message fetched successfully"})
-//     } catch (error) {
-//         res.status(400)
-//         throw new Error(error.message)
-//     }
-// })
 
 router.get("/all-chat/:chatId", requireLogin, (req, res) => {
     Message.find({ chat: req.params.chatId })
         .populate("sender", "name email pic")
-        .populate("chat")
+        // .populate("chat")
         .then(messages => {
-            return User.populate(messages, {
-                path: "chat.users",
-                select: "name email pic"
-            });
-        })
-        .then(populatedMessages => {
             res.status(200).json({
                 msg: "All messages fetched successfully",
-                messages: populatedMessages
+                messages
             });
         })
         .catch(error => {

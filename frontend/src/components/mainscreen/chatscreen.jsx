@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Chatscreen({ chatUser, currChat }) {
+function Chatscreen({ currChat }) {
   const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     if (currChat && currChat._id) {
@@ -15,9 +16,7 @@ function Chatscreen({ chatUser, currChat }) {
       })
       .then(response => {
         console.log(response);
-        response.data.messages.forEach(item => {
-          console.log("item", item.content);
-        });
+        setMessages( [response.data.messages]);
       })
       .catch(error => {
         console.error("Error fetching chat messages:", error);
@@ -30,15 +29,19 @@ function Chatscreen({ chatUser, currChat }) {
       e.preventDefault();
       if (newMessage.trim()) {
         axios.post("http://localhost:3000/send-message", {
-            content:newMessage, chatId: currChat
+            content:newMessage, chatId: currChat._id
           }, {
           headers: {
             "Content-Type":"application/json",
             "Authorization":"Bearer " + localStorage.getItem("jwt")
           }
         })
+        .then(response => {
+          console.log(response);
+          setNewMessage("");
+          setMessages([...messages], response.data)
+        })
         console.log(newMessage);
-        setNewMessage("");
       }
     }
   }
@@ -55,8 +58,14 @@ function Chatscreen({ chatUser, currChat }) {
           />
           <div className='ml-4 my-auto'>{currChat.name}</div>
         </div>
-        <div className='flex-grow overflow-auto'>
-          {/* Chat messages will go here */}
+        <div className='flex flex-col overflow-y-auto max-h-[75vh]'>
+          {messages.map((messages, index) => (
+            // console.log(messages)
+            messages.map((contentItem, idx) => (
+              // console.log(contentItem.content)
+              <span key={idx} className='p-1 bg-blue-300 rounded-lg m-1 max-w-[50%] break-words'> {contentItem.content}</span>
+            ))
+          ))}
         </div>
           <div className='mt-auto'>
             <input 

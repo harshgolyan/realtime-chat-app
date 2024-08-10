@@ -14,7 +14,7 @@ const MainScreen = () =>  {
             <Navbar searchResult={searchResult} setSearchResult={setSearchResult} />
             <div className="flex">
                 <ChatBar searchResult={searchResult} setSearchResult={setSearchResult} chatUser={chatUser} setChatUser={setChatUser} currChat={currChat} setCurrChat={setCurrChat} />
-                <Chatscreen chatUser={chatUser} currChat={currChat} />
+                <Chatscreen currChat={currChat} />
             </div>
         </>
     );
