@@ -1,13 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
+import { chatState } from '../context/chatProvider';
 
-function Chatscreen({ currChat }) {
+function Chatscreen({ currChat, chats }) {
   const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([]);
+  const [socketConnected, setSocketConnected] = useState(false);
+  const socket = useRef();
+  const { user } = chatState();
+
+  const ENDPOINT = "http://localhost:3000";
 
   useEffect(() => {
-    if (currChat && currChat._id) {
-      const chatId = currChat._id;
+    if (user) {
+      socket.current = io(ENDPOINT);
+      socket.current.emit("setup", user);
+      socket.current.on("connected", () => setSocketConnected(true));
+      
+      socket.current.on("message received", (newMessageReceived) => {
+        if (newMessageReceived.chat._id === chats) {
+          setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
+        }
+      });
+    }
+
+    return () => {
+      if (socket.current) socket.current.disconnect();
+    };
+  }, [user, chats]);
+
+  useEffect(() => {
+    if (chats && user) {
+      const chatId = chats;
       axios.get(`http://localhost:3000/all-chat/${chatId}`, {
         headers: {
           "Content-Type": "application/json",
@@ -15,39 +40,39 @@ function Chatscreen({ currChat }) {
         }
       })
       .then(response => {
-        console.log(response);
-        setMessages( [response.data.messages]);
+        setMessages(response.data.messages);
+        socket.current.emit("join chat", chatId);  // Emit to join chat room
       })
       .catch(error => {
-        console.error("Error fetching chat messages:", error);
+        console.error("Error fetching chat messages:", error.message);
       });
     }
-  }, [currChat]);
+  }, [chats, user]);
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && newMessage.trim()) {
       e.preventDefault();
-      if (newMessage.trim()) {
-        axios.post("http://localhost:3000/send-message", {
-            content:newMessage, chatId: currChat._id
-          }, {
-          headers: {
-            "Content-Type":"application/json",
-            "Authorization":"Bearer " + localStorage.getItem("jwt")
-          }
-        })
-        .then(response => {
-          console.log(response);
-          setNewMessage("");
-          setMessages([...messages], response.data)
-        })
-        console.log(newMessage);
-      }
+      axios.post("http://localhost:3000/send-message", {
+        content: newMessage, chatId: chats
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("jwt")
+        }
+      })
+      .then(response => {
+        setNewMessage("");
+        socket.current.emit("new message", response.data.message);
+        setMessages([...messages, response.data.message]);
+      })
+      .catch(error => {
+        console.error("Error sending message:", error);
+      });
     }
-  }
+  };
 
   return (
-    currChat ? (
+    currChat && chats ? (
       <div className='w-[91.6%] bg-white mt-3 p-2 ml-3 rounded-lg flex flex-col h-[88.5vh]'>
         <div className='w-[100%] bg-slate-500 h-10 rounded-lg text-white font-bold flex'>
           <img 
@@ -59,24 +84,31 @@ function Chatscreen({ currChat }) {
           <div className='ml-4 my-auto'>{currChat.name}</div>
         </div>
         <div className='flex flex-col overflow-y-auto max-h-[75vh]'>
-          {messages.map((messages, index) => (
-            // console.log(messages)
-            messages.map((contentItem, idx) => (
-              // console.log(contentItem.content)
-              <span key={idx} className='p-1 bg-blue-300 rounded-lg m-1 max-w-[50%] break-words'> {contentItem.content}</span>
-            ))
+          {messages.map((message, idx) => (
+            <div 
+              key={idx} 
+              className={`flex ${message.sender && message.sender._id !== user._id ? 'justify-end' : 'justify-start'}`}
+            >
+              <span 
+                className={`px-2 py-1 m-1 max-w-[60%] break-words rounded-lg ${
+                  message.sender && message.sender._id !== user._id ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
+                }`}
+              > 
+                {message.content}
+              </span>
+            </div>
           ))}
         </div>
-          <div className='mt-auto'>
-            <input 
-              type="text" 
-              placeholder='Enter the message'
-              className='border-2 border-black rounded-lg w-[100%] p-1 text-black'
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
+        <div className='mt-auto'>
+          <input 
+            type="text" 
+            placeholder='Enter the message'
+            className='border-2 border-black rounded-lg w-[100%] p-1 text-black'
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
       </div>
     ) : (
       <div className='w-[91.6%] bg-white mt-3 p-2 ml-3 rounded-lg flex justify-center items-center h-[88.5vh]'>

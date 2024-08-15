@@ -19,7 +19,6 @@ module.exports = (req, res, next) => {
                     .then(userData => {
                         userData.password = undefined,
                         req.user = userData
-                        console.log(userData)
                         next()
                     })
             }

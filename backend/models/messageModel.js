@@ -1,15 +1,12 @@
 const mongoose = require("mongoose");
-const { z } = require("zod");
 
 const objectId = mongoose.Schema.Types.ObjectId
-const messageSchemaMongoose = mongoose.Schema(
-  {
-    sender: { type: objectId, ref: "User" },
-    content: { type: String, trim: true },
-    chat: { type: objectId, ref: "Chat" },
-    readBy: [{ type: objectId, ref: "User" }],
-  },
-  { timestamps: true }
-);
+const messageSchemaMongoose = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  content: { type: String, trim: true },
+  chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
+  readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+});
+
 const Message = mongoose.model("Message", messageSchemaMongoose);
 module.exports = Message;

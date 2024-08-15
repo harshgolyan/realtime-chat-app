@@ -28,7 +28,42 @@ const connectDB = async () => {
 }
 
 connectDB();
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`server is running at ${port}`.cyan.bold);
+})
+
+const io = require('socket.io')(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: "http://localhost:5173"
+    }
+})
+io.on("connection", (socket) => {
+    console.log(`connected to socket.io`)
+
+    socket.on("setup", (userData) => {
+        socket.join(userData);
+        socket.emit("connected");
+    })
+
+    socket.on("join chat", (room) => {
+        console.log("chat room id: ",room)
+        socket.join(room)
+    })
+
+    socket.on("new message", (newMessageReceived) => {
+        console.log(newMessageReceived)
+        const chat = newMessageReceived.chat;
+
+        if (!chat.users) return console.log("Chat users not defined");
+
+        chat.users.forEach(user => {
+            if (user._id == newMessageReceived.sender._id) return;
+            socket.to(user._id).emit("message received", newMessageReceived);
+        });
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected");
+    });
 })

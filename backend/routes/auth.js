@@ -30,7 +30,6 @@ router.post("/signup", (req,res) => {
                             })
                             user.save()
                                 .then(newUser => {
-                                    console.log(newUser)
                                     res.status(200).json({msg: "new user added successfully"})
                                 })
                           })
@@ -71,7 +70,7 @@ router.post("/login", (req,res) => {
 
 
 router.get("/protected",requireLogin,(req,res)=>{
-   res.json(req.user)
+//    res.json(req.user)
 })
 
 module.exports = router;
