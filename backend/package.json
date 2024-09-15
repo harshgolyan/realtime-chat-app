@@ -5,7 +5,9 @@
   "main": "index.js",
   "proxy": "http://127.0.0.1:3000",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build":"npm install && npm install --prefix frontend  && npm run build --prefix frontend",
+
   },
   "author": "",
   "license": "ISC",
