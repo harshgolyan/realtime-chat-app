@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { MessageCircleMore } from 'lucide-react';
+
 
 
 const SignUp = () => {
@@ -58,8 +60,8 @@ const SignUp = () => {
             <form onSubmit={onSubmitHandler}>
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="h-[25rem] w-[40rem] rounded-lg flex">
-                        <div className="bg-purple-500 flex-col rounded-l-lg w-[50%]">
-                            
+                        <div className="bg-slate-500 flex-col rounded-l-lg w-[50%] flex justify-center items-center">
+                            <MessageCircleMore size={250} color="white"/>
                         </div>
                         <div className="bg-white flex-col rounded-r-lg w-[50%]">
                             <div className="font-extrabold ml-[30%] text-[2rem]">Sign Up</div>
@@ -77,7 +79,7 @@ const SignUp = () => {
                             </div>
                             <div className="mx-3 mt-4 text-blue-700 underline ml-[7.5rem]"><a href="/login">Already have an account ?</a></div>
                             <div className="mx-3 mt-8">
-                                <button className="bg-blue-700 w-[100%] rounded-md p-2 text-white font-bold text-[1rem]">Sign Up</button>
+                                <button className="bg-slate-700 w-[100%] rounded-md p-2 text-white font-bold text-[1rem]">Sign Up</button>
                             </div>
                         </div>
                     </div>

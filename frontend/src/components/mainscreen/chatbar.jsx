@@ -14,14 +14,20 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
         }
       })
       .then(response => {
-        // console.log(response.data);
-        const combinedData = response.data.map(item => {
+        console.log("response in fetchchat", response.data);
+        const combinedData = response?.data?.map(item => {
           const otherUser = item.users.find(user => user._id !== userId);
-          return otherUser ? { chatId: item._id, name: otherUser.name, pic: otherUser.pic, userId: otherUser._id } : null;
+          if (otherUser) {
+            return { chatId: item._id, name: otherUser.name, pic: otherUser.pic, userId: otherUser._id };
+          } else {
+            return null;
+          }
         }).filter(user => user !== null);
-
-        setChatUser(combinedData);
-        // console.log("chatUser", chatUser)
+  
+        if (combinedData) {
+          setChatUser(combinedData);
+        }
+        console.log("chatUser", chatUser)
       })
       .catch(error => {
         console.error("Error fetching chat data:", error);
@@ -32,7 +38,8 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
   const usersToDisplay = (searchResult && searchResult.length > 0) ? searchResult : chatUser;
 
   const createChatHandler = (user) => {
-    const id = user.userId
+    const id = user.userId || user._id
+    console.log("user",user)
     axios.post("http://localhost:3000/createchat", {
         userId: id
     }, {
@@ -42,8 +49,8 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
         }
     })
     .then(response => {
-        // console.log("response in create chat", response);
-        // console.log("user in create chat", user.userId)
+        console.log("response in create chat", response);
+        console.log("user in create chat", user.userId)
         setChats(user.chatId)
         setCurrChat(user)
         setSearchResult([]);
@@ -59,15 +66,15 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
 
   return (
     <div>
-      <div className="w-[25rem] mt-3 bg-slate-300 p-2 rounded-lg h-[89.5vh]">
+      <div className="w-[25rem] mt-3 bg-slate-200 p-2 rounded-lg m-2 h-[88.5vh]">
         <div className="flex justify-between">
           <div className="p-2 font-bold text-[20px] mt-3">My Chats</div>
           <button className="p-3 m-3 border-3 rounded-md text-white bg-slate-600 font-semibold" onClick={notify}>Create Group Chat +</button>
         </div>
-        {usersToDisplay.map((user, index) => {
+        {usersToDisplay && usersToDisplay.map((user, index) => {
           // console.log("user", user); // Add your console log here
           return (
-            <div key={index} className="bg-white m-2 rounded-lg flex flex-row p-2 cursor-pointer" onClick={() => createChatHandler(user)}>
+            <div key={index} className="bg-white m-2 rounded-lg flex flex-row p-2 cursor-pointer border-2 border-slate-400" onClick={() => createChatHandler(user)}>
               <img src={user.pic} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
               <p className="font-bold my-auto ml-4">{user.name}</p>
             </div>

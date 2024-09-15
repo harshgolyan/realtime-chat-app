@@ -61,6 +61,9 @@ function Navbar({ searchResult, setSearchResult }) {
         />
         <button className="px-2 ml-3 border-2 border-gray-500 rounded-2xl" onClick={searchHandler}>Search</button>
       </div>
+      <div className='font-bold text-2xl'>
+        Chatify
+      </div>
       <div className="relative">
         <img
           src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
@@ -69,7 +72,7 @@ function Navbar({ searchResult, setSearchResult }) {
         />
         {dropdownVisible && (
           <div className="absolute right-0 mt-2 w-[150px] bg-white border border-gray-300 rounded-md shadow-lg z-10">
-            {options.map(option => (
+            {options?.map(option => (
               <div
                 key={option.value}
                 className="p-2 cursor-pointer hover:bg-gray-100"

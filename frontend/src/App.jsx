@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   return(
     <>
-      <div className="bg-[#eaa7f8] h-screen">
+      <div className="h-full bg-slate-400">
           <BrowserRouter>
             <Routes>
               <Route exact path = "/" element={<SignUp />}/>

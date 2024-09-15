@@ -73,7 +73,7 @@ function Chatscreen({ currChat, chats }) {
 
   return (
     currChat && chats ? (
-      <div className='w-[91.6%] bg-white mt-3 p-2 ml-3 rounded-lg flex flex-col h-[88.5vh]'>
+      <div className='w-[91.6%] bg-white mt-3 p-2 rounded-lg flex flex-col h-[88.5vh] m-2'>
         <div className='w-[100%] bg-slate-500 h-10 rounded-lg text-white font-bold flex'>
           <img 
             src={currChat.pic} 
@@ -84,14 +84,14 @@ function Chatscreen({ currChat, chats }) {
           <div className='ml-4 my-auto'>{currChat.name}</div>
         </div>
         <div className='flex flex-col overflow-y-auto max-h-[75vh]'>
-          {messages.map((message, idx) => (
+        {messages && messages.map((message, idx) => (
             <div 
               key={idx} 
-              className={`flex ${message.sender && message.sender._id !== user._id ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.sender && message.sender._id !== currChat.userId ? 'justify-end' : 'justify-start'}`}
             >
               <span 
-                className={`px-2 py-1 m-1 max-w-[60%] break-words rounded-lg ${
-                  message.sender && message.sender._id !== user._id ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
+                className={`px-3 py-2 m-1 max-w-[60%] break-words rounded-lg opacity-100 ${
+                  message.sender && message.sender._id !== currChat.userId ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
                 }`}
               > 
                 {message.content}
@@ -111,7 +111,7 @@ function Chatscreen({ currChat, chats }) {
         </div>
       </div>
     ) : (
-      <div className='w-[91.6%] bg-white mt-3 p-2 ml-3 rounded-lg flex justify-center items-center h-[88.5vh]'>
+      <div className='w-[91.6%] bg-slate-200 mt-3 p-2 ml-2 mr-2 rounded-lg flex justify-center items-center h-[88.5vh]'>
         <p className='text-gray-500 font-bold text-[2.5rem]'>Start the chat</p>
       </div>
     )
