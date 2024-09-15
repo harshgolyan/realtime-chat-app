@@ -3,6 +3,7 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const color = require("colors")
 const dotenv = require("dotenv")
+const path = require("path")
 
 const app = express()
 dotenv.config()
@@ -15,6 +16,23 @@ app.use(require('./routes/auth'))
 app.use(require('./routes/user'))
 app.use(require('./routes/chat'))
 app.use(require('./routes/message'))
+
+// |-------------------------- deployment -----------------------------|
+const __dirname1 = path.resolve();
+if(process.env.NODE_ENV) {
+    app.use(express.static(path.join(__dirname1,'../frontend/dist')))
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname1,'../frontend/dist/index.html'))
+    })
+}
+else {
+    app.get("/", (req, res) => {
+        res.send("api is running")
+    })
+
+}
+
 
 
 const connectDB = async () => {
