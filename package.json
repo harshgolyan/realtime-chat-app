@@ -5,7 +5,7 @@
   "main": "index.js",
   "proxy": "http://127.0.0.1:3000",
   "scripts": {
-    "start":"node backned/index.js",
+    "start":"node backend/index.js",
     "dev": "nodemon backend/index.js",
     "build":"npm install && npm install --prefix frontend  && npm run build --prefix frontend"
   },
