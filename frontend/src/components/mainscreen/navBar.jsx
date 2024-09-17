@@ -16,7 +16,7 @@ function Navbar({ searchResult, setSearchResult }) {
       setSearchResult([]);
       return;
     }
-    axios.get(`http://localhost:3000/alluser?search=${search}`, {
+    axios.get(`https://chatify-1cxv.onrender.com/alluser?search=${search}`, {
       headers: {
         "Authorization": localStorage.getItem("jwt"),
         "Content-Type": "application/json"

@@ -33,7 +33,7 @@ const SignUp = () => {
     // }
     const onSubmitHandler = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/signup', {
+    axios.post('https://chatify-1cxv.onrender.com/signup', {
         name,
         email,
         password

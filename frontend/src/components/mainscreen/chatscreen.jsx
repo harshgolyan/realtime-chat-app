@@ -52,7 +52,7 @@ function Chatscreen({ currChat, chats }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && newMessage.trim()) {
       e.preventDefault();
-      axios.post("http://localhost:3000/send-message", {
+      axios.post("https://chatify-1cxv.onrender.com/send-message", {
         content: newMessage, chatId: chats
       }, {
         headers: {

@@ -8,7 +8,7 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
 
   useEffect(() => {
     if (!searchResult || searchResult.length === 0) {
-      axios.get("http://localhost:3000/fetchchat", {
+      axios.get("https://chatify-1cxv.onrender.com/fetchchat", {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("jwt")
         }
@@ -40,7 +40,7 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
   const createChatHandler = (user) => {
     const id = user.userId || user._id
     console.log("user",user)
-    axios.post("http://localhost:3000/createchat", {
+    axios.post("https://chatify-1cxv.onrender.com/createchat", {
         userId: id
     }, {
         headers: {

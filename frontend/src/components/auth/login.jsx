@@ -13,7 +13,7 @@ const Login = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/login", {
+        axios.post("https://chatify-1cxv.onrender.com/login", {
             email, password
         }, {
             headers: {
