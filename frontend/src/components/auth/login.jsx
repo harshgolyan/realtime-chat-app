@@ -8,7 +8,6 @@ import { MessageCircleMore } from "lucide-react";
 const Login = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    // console.log(email, password)
     const navigate = useNavigate();
 
     const onSubmitHandler = (e) => {
@@ -21,12 +20,10 @@ const Login = () => {
             }
         })
         .then(response => {
-        console.log(response)
         if (response.data.msg === 'user login successfully') {
             localStorage.setItem('jwt',response.data.token)
             localStorage.setItem('userId',response.data.uid)
             localStorage.setItem("userName",response.data.name)
-            // console.log(response.data)
             response.data.msg ? toast.success(response.data.msg) : ""
             navigate('/mainscreen');
         }

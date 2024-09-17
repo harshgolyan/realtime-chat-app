@@ -10,7 +10,7 @@ function Chatscreen({ currChat, chats }) {
   const socket = useRef();
   const { user } = chatState();
 
-  const ENDPOINT = "http://localhost:3000";
+  const ENDPOINT = "https://chatify-1cxv.onrender.com/";
 
   useEffect(() => {
     if (user) {
@@ -33,7 +33,7 @@ function Chatscreen({ currChat, chats }) {
   useEffect(() => {
     if (chats && user) {
       const chatId = chats;
-      axios.get(`http://localhost:3000/all-chat/${chatId}`, {
+      axios.get(`https://chatify-1cxv.onrender.com/all-chat/${chatId}`, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + localStorage.getItem("jwt")

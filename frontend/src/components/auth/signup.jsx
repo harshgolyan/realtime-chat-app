@@ -11,26 +11,8 @@ const SignUp = () => {
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    // console.log(name, email, password);
     const navigate = useNavigate();
 
-    // const onSubmitHandler = (e) =>{
-    //     e.preventDefault()
-    //     axios('http://localhost:5173/',{
-    //         method:'post',
-    //         headers:{
-    //             'Content-Type':'application/json'
-    //         },
-    //         body:JSON.stringify({name,email,password})
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         if(data.msg === 'new user added successfully'){
-    //             navigate('/login')
-    //         }
-    //     })
-
-    // }
     const onSubmitHandler = (e) => {
     e.preventDefault();
     axios.post('https://chatify-1cxv.onrender.com/signup', {

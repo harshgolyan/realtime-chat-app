@@ -24,7 +24,6 @@ function Navbar({ searchResult, setSearchResult }) {
     })
     .then(response => {
       setSearchResult(response.data);
-      console.log(response.data);
     });
   };
 
@@ -37,7 +36,6 @@ function Navbar({ searchResult, setSearchResult }) {
     if (option.value === 'profile') {
       console.log('Navigate to profile');
     } else if (option.value === 'logout') {
-      console.log('Handle logout');
       localStorage.removeItem('jwt');
       localStorage.removeItem('userId');
       localStorage.removeItem("userName")

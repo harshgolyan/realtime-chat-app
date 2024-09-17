@@ -9,7 +9,6 @@ const ChatProvider = ({children}) => {
     useEffect(() => {
         const userId = localStorage.getItem("userId")
         setUser(userId)
-        // console.log(userId)
     },[])
 
     return <chatContext.Provider value={{user, setUser}}>{children}</chatContext.Provider>

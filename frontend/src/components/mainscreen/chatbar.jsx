@@ -14,7 +14,6 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
         }
       })
       .then(response => {
-        console.log("response in fetchchat", response.data);
         const combinedData = response?.data?.map(item => {
           const otherUser = item.users.find(user => user._id !== userId);
           if (otherUser) {
@@ -27,7 +26,6 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
         if (combinedData) {
           setChatUser(combinedData);
         }
-        console.log("chatUser", chatUser)
       })
       .catch(error => {
         console.error("Error fetching chat data:", error);
@@ -39,7 +37,6 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
 
   const createChatHandler = (user) => {
     const id = user.userId || user._id
-    console.log("user",user)
     axios.post("https://chatify-1cxv.onrender.com/createchat", {
         userId: id
     }, {
@@ -49,8 +46,6 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
         }
     })
     .then(response => {
-        console.log("response in create chat", response);
-        console.log("user in create chat", user.userId)
         setChats(user.chatId)
         setCurrChat(user)
         setSearchResult([]);
@@ -72,7 +67,6 @@ const ChatBar = ({ searchResult, setSearchResult, chatUser, setChatUser, setCurr
           <button className="p-3 m-3 border-3 rounded-md text-white bg-slate-600 font-semibold" onClick={notify}>Create Group Chat +</button>
         </div>
         {usersToDisplay && usersToDisplay.map((user, index) => {
-          // console.log("user", user); // Add your console log here
           return (
             <div key={index} className="bg-white m-2 rounded-lg flex flex-row p-2 cursor-pointer border-2 border-slate-400" onClick={() => createChatHandler(user)}>
               <img src={user.pic} style={{ width: '50px', height: '50px', borderRadius: '50%' }} />
